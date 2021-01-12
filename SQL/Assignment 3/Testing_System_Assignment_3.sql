@@ -12,7 +12,7 @@ CREATE TABLE `Position`(
 	PositionName		VARCHAR(30) NOT NULL UNIQUE
 );
 CREATE TABLE `Account`(
-	AccountID			INT AUTO_INCREMENT PRIMARY KEY,
+	AccountID			INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Email				VARCHAR(30) NOT NULL UNIQUE,
     Username			VARCHAR(30) NOT NULL UNIQUE,
     Fullname			VARCHAR(30) NOT NULL,
@@ -25,13 +25,13 @@ CREATE TABLE `Account`(
 CREATE TABLE `Group`(
 	GroupID				TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     GroupName			VARCHAR(50) NOT NULL UNIQUE,
-	CreatorID			INT NOT NULL,
+	CreatorID			INT UNSIGNED NOT NULL,
 	CreatDate			DATE,
-    FOREIGN KEY (CreatorID) REFERENCES `Account`(AccountID)
+    FOREIGN KEY (CreatorID) REFERENCES `Account`(AccountID)  ON DELETE CASCADE
 );
 CREATE TABLE GroupAccount(
 	GroupID				TINYINT UNSIGNED NOT NULL,
-    AccountID			INT NOT NULL,
+    AccountID			INT UNSIGNED NOT NULL,
     JoinDate			DATE,
     FOREIGN KEY (GroupID) REFERENCES `Group`(GroupID) ON DELETE CASCADE,
     FOREIGN KEY (AccountID) REFERENCES `Account`(AccountID) ON DELETE CASCADE,
@@ -50,10 +50,11 @@ CREATE TABLE Question(
     Content				VARCHAR(50),
     CategoryID			TINYINT UNSIGNED,
     TypeID				TINYINT UNSIGNED,
-    CreatorID			INT,
+    CreatorID			INT UNSIGNED,
     CreateDate			DATE,
     FOREIGN KEY (TypeID) REFERENCES TypeQuestion(TypeID) ON DELETE CASCADE,
-    FOREIGN KEY (CategoryID) REFERENCES CategoryQuestion(CategoryID) ON DELETE CASCADE
+    FOREIGN KEY (CategoryID) REFERENCES CategoryQuestion(CategoryID) ON DELETE CASCADE,
+    FOREIGN KEY	(CreatorID) REFERENCES `Account`(AccountID) ON DELETE CASCADE
 );
 CREATE TABLE Answer(
 	AnswerID			INT AUTO_INCREMENT PRIMARY KEY,
@@ -70,7 +71,8 @@ CREATE TABLE Exam(
     Duration			TINYINT UNSIGNED,
     CreatorID			INT UNSIGNED,
     CreateDate			DATE,
-    FOREIGN KEY (CategoryID) REFERENCES CategoryQuestion(CategoryID) ON DELETE CASCADE
+    FOREIGN KEY (CategoryID) REFERENCES CategoryQuestion(CategoryID) ON DELETE CASCADE,
+    FOREIGN KEY	(CreatorID) REFERENCES `Account`(AccountID) ON DELETE CASCADE
     );
 CREATE TABLE ExamQuestion(
 	ExamID				TINYINT UNSIGNED NOT NULL,
@@ -141,6 +143,8 @@ VALUE	('Java'),
         ('ADO.NET'),
         ('ASP.NET'),
         ('PHP');
+        
+        
 INSERT INTO question(content, categoryID, TypeID, creatorID, createdate)
 VALUE	('Câu hỏi về Java',		'1',		'1',		'1',		'2020-04-05'),
 		('Câu Hỏi về PHP',		'2',		'2',		'2', 		'2020-04-06'),
@@ -152,6 +156,8 @@ VALUE	('Câu hỏi về Java',		'1',		'1',		'1',		'2020-04-05'),
         ('Hỏi về C++',			'8',   		'1',		'8',		'2020-04-07'),
         ('Hỏi về SQL',			'4',   		'2', 		'9',		'2020-04-07'),
         ('Hỏi về Python',		'7',   		'1',  		'10',		'2020-04-07');
+        
+        
 INSERT INTO answer(content, questionID, Iscorrect)
 VALUE	('Trả lời 1', 		'1', 		0	),
 		('Trả lời 2', 		'1', 		1	),
@@ -163,6 +169,8 @@ VALUE	('Trả lời 1', 		'1', 		0	),
         ('Trả lời 8', 		'8', 		0	),
         ('Trả lời 9', 		'9', 		1	),
         ('Trả lời 10', 		'10', 		1	);
+        
+        
 INSERT INTO Exam(`code`, title, categoryID, duration, creatorID, createdate)
 VALUE	('VTIQ001'		, 'Đề thi C#'			,	1			,	60		,   '5'			,'2019-04-05'),
 		('VTIQ002'		, 'Đề thi PHP'			,	10			,	60		,   '2'			,'2019-04-05'),
@@ -174,7 +182,9 @@ VALUE	('VTIQ001'		, 'Đề thi C#'			,	1			,	60		,   '5'			,'2019-04-05'),
         ('VTIQ008'		, 'Đề thi Python'		,	8			,	60		,   '8'			,'2020-04-07'),
 		('VTIQ009'		, 'Đề thi ADO.NET'		,	4			,	90		,   '9'			,'2020-04-07'),
         ('VTIQ010'		, 'Đề thi ASP.NET'		,	7			,	90		,   '10'		,'2020-04-08');
-INSERT INTO Examquestion(ExamID, questionID)
+        
+        
+INSERT INTO Examquestion(ExamID, 	questionID)
 VALUE					(	1	,		5		),
 						(	2	,		10		), 
 						(	3	,		4		), 
@@ -186,50 +196,3 @@ VALUE					(	1	,		5		),
 						(	9	,		9		), 
 						(	10	,		8		);
 
-SELECT * 
-	FROM Testing_System.department;
-SELECT * 
-	FROM Testing_System.department 
-		WHERE department.departmentName = 'Sale' ;
-SELECT Fullname, length(Fullname)
-	FROM `account`
-		WHERE length(Fullname)= (SELECT max(length(Fullname)) FROM `account`);
-SELECT Email, Username, Fullname, length(Fullname),  createdate
-	FROM `account` 
-		WHERE departmentID = 3
-        AND length(Fullname)= (SELECT max(length(Fullname)) FROM `account`);
-SELECT GroupName 
-	FROM `group` 
-		WHERE CreatDate < '2020-12-20';
-SELECT questionID, COUNT(answerID) 
-	FROM answer Group By questionID 
-		HAVING COUNT(answerID)>= 4; 
-SELECT ExamID 
-	FROM Exam
-		WHERE duration >= 60
-        AND	  createdate < '2020-12-20';
-SELECT *
-	FROM `group`
-		ORDER BY CreatDate DESC
-		LIMIT 5;
-SELECT COUNT(AccountID)
-	FROM `account`
-		WHERE DepartmentID = 2;
-SELECT *
-	FROM `account`
-		WHERE left(Fullname, 1)= 'd'
-        AND	right(Fullname, 1)= 'O';
-DELETE 
-	FROM exam
-		WHERE CreateDate < '2020-12-20';
-DELETE 
-	FROM question
-		WHERE substring_index(content,' ',2) = 'câu hỏi';	
-SELECT * FROM question;
-UPDATE account
-	SET Fullname = 'Nguyễn Bá Lộc',
-		Email = 'loc.nguyenba@vti.com.vn'
-	WHERE AccountID = 5;
-UPDATE groupaccount
-	SET GroupID =4
-    WHERE AccountID =5;
