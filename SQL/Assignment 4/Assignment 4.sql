@@ -274,8 +274,8 @@ FROM
                 
                 
 -- Question 11: Thống kê mỗi phòng ban có bao nhiêu dev, test, scrum master, PM
- SELECT t1.DepartmentID, t2.PositionID,
-	if(t2.number_of_account =0 , 0 ,t2.number_of_account) AS ' Số lượng'
+ SELECT t1.DepartmentID, t2.DepartmentName, t2.PositionID, t2.PositionName,
+	if(t2.number_of_account is null , 0 ,t2.number_of_account) AS ' Số lượng'
 FROM
 	(SELECT 
         department.DepartmentID, `position`.PositionID
@@ -283,10 +283,11 @@ FROM
         department 
     CROSS JOIN `position` 
     ORDER BY department.DepartmentID , `position`.PositionID) AS T1
--- LEFT 
 JOIN 
  (SELECT 
 	department.DepartmentID,
+    department.DepartmentName,
+     `position`.PositionName,
      `position`.PositionID, 
             COUNT(`account`.AccountID) AS number_of_account
     FROM
@@ -373,4 +374,4 @@ SELECT `group`.GroupName , count(groupaccount.AccountID)
 	FROM `group`
     JOIN groupaccount ON `group`.GroupID = groupaccount.GroupID
     GROUP BY groupaccount.AccountID
-    HAVING count(groupaccount.AccountID) <7;
+    HAVING count(groupaccount.AccountID) <7; 
