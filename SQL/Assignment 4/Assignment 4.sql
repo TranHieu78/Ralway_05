@@ -187,11 +187,11 @@ VALUE	('VTIQ001'		, 'Đề thi C#'			,	1			,	60		,   '5'			,'2019-04-05'),
 INSERT INTO Examquestion(ExamID, 	questionID)
 VALUE					(	1	,		5		),
 						(	2	,		10		), 
-						(	3	,		9		), 
-						(	4	,		3		), 
+						(	3	,		5		), 
+						(	4	,		5		), 
 						(	5	,		10		), 
 						(	6	,		10		), 
-						(	7	,		2		), 
+						(	7	,		5		), 
 						(	8	,		10		), 
 						(	9	,		9		), 
 						(	10	,		8		);
@@ -226,36 +226,39 @@ SELECT `account`.AccountID, `account`.Fullname, `account`.PositionID, `position`
     
     
 -- Question 5: Viết lệnh để lấy ra danh sách câu hỏi được sử dụng trong đề thi nhiều nhất
-SELECT Examquestion.questionID, question.Content, count(Examquestion.questionID) AS ' Số lần được sử dụng'
-	FROM examquestion
-    JOIN question ON Examquestion.questionID = question.questionID
-	GROUP BY Examquestion.questionID
-	ORDER BY count(Examquestion.questionID) DESC
-    LIMIT 1; 
-    
-    
+SELECT question.QuestionID, question.Content, count(examquestion.QuestionID) AS ' Số lượng'
+    FROM question
+	JOIN examquestion ON  question.QuestionID = examquestion.QuestionID
+    GROUP BY question.QuestionID
+    HAVING count(examquestion.QuestionID) = (SELECT max(e)
+												FROM (SELECT count(examquestion.QuestionID) As e 
+														FROM examquestion
+                                                        GROUP BY examquestion.QuestionID) t1 ) ;
+
+
 -- Question 6: Thông kê mỗi category Question được sử dụng trong bao nhiêu Question
-SELECT categoryquestion.CategoryName, count(question.CategoryID) AS ' Số câu hỏi sử dụng'
-	FROM question
-    JOIN categoryquestion ON categoryquestion.CategoryID = question.CategoryID
-    GROUP BY question.CategoryID;
+SELECT categoryquestion.CategoryName, IF(count(question.CategoryID) is Null, 0, count(question.CategoryID)) AS ' Số câu hỏi sử dụng'
+	FROM categoryquestion
+	LEFT JOIN question ON categoryquestion.CategoryID = question.CategoryID
+    GROUP BY categoryquestion.CategoryName;
     
     
 -- Question 7: Thông kê mỗi Question được sử dụng trong bao nhiêu Exam
-SELECT question.Content, count(exam.ExamID) AS ' Số bài thi sử dụng ' 
-	FROM exam
-    JOIN categoryquestion ON exam.CategoryID = categoryquestion.CategoryID
-	JOIN question ON categoryquestion.CategoryID = question.CategoryID
-    GROUP BY exam.ExamID;
-    
+SELECT question.Content, IF(count(Examquestion.ExamID) is NULL, 0, count(Examquestion.ExamID)) AS ' Số bài thi sử dụng ' 
+	FROM question
+	LEFT JOIN Examquestion ON Examquestion.questionID = question.questionID
+    GROUP BY question.Content;
+	
     
 -- Question 8: Lấy ra Question có nhiều câu trả lời nhất
-SELECT t2.Content, max(maxquestion) AS ' số câu trả lời ' 
-	FROM (	SELECT question.Content, count(*) AS maxquestion
-				FROM answer
-                JOIN question ON question.QuestionID = answer.QuestionID
-                GROUP BY question.Content) as t2;
-                
+SELECT question.Content, count(answer.QuestionID) AS ' số câu trả lời ' 
+	FROM question
+    JOIN answer ON question.QuestionID = answer.QuestionID
+    GROUP BY question.Content
+	HAVING count(answer.QuestionID) = ( SELECT MAX(e) 
+										FROM (SELECT  count(answer.QuestionID) AS e
+													FROM answer
+                                                    GROUP BY answer.QuestionID ) t1 );
                 
 -- Question 9: Thống kê số lượng account trong mỗi group
 SELECT `group`.GroupID, count(groupaccount.GroupID) AS ' Số lượng account'
