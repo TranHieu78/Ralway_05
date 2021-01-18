@@ -107,7 +107,7 @@ VALUE 					('1' , 		'A' , 		'Trần Đức Hiếu', 		'3', 		'1', 		'2020-03-05'
 						('7' ,		'G' , 		'Trần Thành Việt', 		'2', 		'3', 		'2021-04-07'),
 						('8' ,		'H' , 		'Lê Việt Hoàng', 		'8', 		'4', 		'2020-04-07'),
 						('9' , 		'J' , 		'Phạm Thị Mơ', 			'8', 		'3', 		'2020-04-09'),
-						('10' , 	'K' , 		'Nguyễn Văn Minh', 		'2', 		'4', 		'2021-04-01');
+						('10' , 	'K' , 		'Nguyễn Văn Minh', 		NULL, 		'4', 		'2021-04-01');
 INSERT INTO `group`(GroupName, CreatorID, CreatDate)
 VALUE 	('VTI Sale 01', '1', '2019-03-05'),
 		('VTI Sale 02', '2', '2020-03-07'),
@@ -198,10 +198,9 @@ VALUE					(	1	,		5		),
 
 
 -- Question 1: Viết lệnh để lấy ra danh sách nhân viên và thông tin phòng ban của họ
-SELECT `account`.AccountID , `account`.Fullname, `account`.DepartmentID, department.DepartmentName
+SELECT `account`.AccountID , `account`.Fullname, IF(`account`.DepartmentID is null, 'Không thuộc phòng ban nào', `account`.DepartmentID) AS 'ID phòng ban'
 	FROM `account`
-    JOIN department ON `account`.DepartmentID = department.departmentID;
-    
+    LEFT JOIN department ON `account`.DepartmentID = department.departmentID;
     
 -- Viết lệnh để lấy ra thông tin các account được tạo sau ngày 20/12/2010
 SELECT `account`.AccountID , `account`.Fullname, `account`.Username,  `account`.Email, `account`.CreateDate , `account`.DepartmentID, department.DepartmentName
@@ -372,7 +371,7 @@ SELECT `group`.GroupName , count(groupaccount.AccountID) AS ' Số thành  viên
     JOIN groupaccount ON `group`.GroupID = groupaccount.GroupID
     GROUP BY groupaccount.AccountID
     HAVING count(groupaccount.AccountID) > 5
-UNION
+UNION ALL
 SELECT `group`.GroupName , count(groupaccount.AccountID)
 	FROM `group`
     JOIN groupaccount ON `group`.GroupID = groupaccount.GroupID
