@@ -332,9 +332,12 @@ BEGIN
 	Insert  into `account` ( Email, Username, Fullname, DepartmentID, PositionID, CreateDate )
 	Value				   (Nhap_Email, Substring_index(Nhap_Fullname,'@',1), Nhap_Fullname, V_deparment, V_Position, NOW());
     
-    IF row_count() >0 
-    Then
-		Set 
+		IF ROW_COUNT() > 0 THEN
+		SELECT 'You created record successfully!';
+    ELSE 
+		SELECT 'You did not create record successfully!';
+	END IF;
+
 END$$
 
 DELIMITER ;
