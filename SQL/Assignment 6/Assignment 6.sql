@@ -507,6 +507,8 @@ Begin
                     AND yearQ = YearID
                     GRoup by t2.MonthID ) AS t3 ON t2.MonthID = t3.MonthID
 		Group by t2.MonthID;
+        
+END$$
       
 DELIMITER ;
 
