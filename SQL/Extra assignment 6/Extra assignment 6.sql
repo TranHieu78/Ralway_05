@@ -58,7 +58,7 @@ VALUES				(1,					'a',				'2020-03-08',				'nice',			'chuẩn bị thêm',		'202
 INSERT INTO Project_Modules(ProjectID,		EmployeeID,		ProjectModuleDate,		ProjectModuleCompledOn,		ProjectModuleDescription)
 VALUES						(	1,				1,				'2020-11-12',			'2021-01-03',					'Hơi chậm'),
 							(	2,				2,				'2020-12-20',			'2021-02-01',					'Hơi chậm'),
-                            (	3,				1,				'2020-12-02',			'2020-12-15',						'Ổn');
+                            (	3,				3,				'2020-12-02',			'2020-12-15',						'Ổn');
 
 INSERT INTO Work_Done(EmployeeID		,ModuleID,		WorkDoneDate,		WorkDoneDescription,		WorkDoneStatus)
 VALUES				(	1,					3,				'2020-12-16',			'OK',				'Đã hoàn thành'),
