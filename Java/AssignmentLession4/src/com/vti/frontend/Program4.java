@@ -1,6 +1,6 @@
 package com.vti.frontend;
 
-import com.vti.emtity.Student;
+import com.vti.emtity.EncapsulationQ1.Student;
 
 public class Program4 {
 	@SuppressWarnings("deprecation")

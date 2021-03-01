@@ -3,14 +3,14 @@ package com.vti.backend;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.vti.emtity.Bao;
-import com.vti.emtity.Book;
-import com.vti.emtity.CanBo;
-import com.vti.emtity.CongNhan;
-import com.vti.emtity.KySu;
-import com.vti.emtity.NhanVien;
-import com.vti.emtity.TaiLieu;
-import com.vti.emtity.Tapchi;
+import com.vti.emtity.InheritanceQ1.CanBo;
+import com.vti.emtity.InheritanceQ1.CongNhan;
+import com.vti.emtity.InheritanceQ1.KySu;
+import com.vti.emtity.InheritanceQ1.NhanVien;
+import com.vti.emtity.InheritanceQ4.Bao;
+import com.vti.emtity.InheritanceQ4.Book;
+import com.vti.emtity.InheritanceQ4.TaiLieu;
+import com.vti.emtity.InheritanceQ4.Tapchi;
 
 public class Excercise5 {
 
@@ -84,8 +84,8 @@ public class Excercise5 {
 
 // c) 	Hiện thị thông tin về danh sách các cán bộ.
 	public void inforCanBo() {
-		for (CanBo canBo : canBos) {
-			canBo.getInfor();
+		for (int i = 0; i< canBos.size(); i++) {
+			System.out.println(canBos.get(i));
 		}
 	}
 
@@ -208,7 +208,5 @@ public class Excercise5 {
 			}
 		}
 	}
-	
-	
-	
+
 }
