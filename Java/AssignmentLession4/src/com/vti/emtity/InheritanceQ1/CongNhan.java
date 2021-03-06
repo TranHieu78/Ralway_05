@@ -9,6 +9,7 @@ public class CongNhan extends CanBo {
 		return level;
 	}
 
+	@Override
 	public void input() {
 		super.input();
 
@@ -18,6 +19,7 @@ public class CongNhan extends CanBo {
 		level = scanner.nextByte();
 	}
 
+	@Override
 	public void getInfor() {
 		super.getInfor();
 		System.out.println("Bậc  : " + level);

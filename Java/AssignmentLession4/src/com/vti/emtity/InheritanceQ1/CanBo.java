@@ -2,7 +2,7 @@ package com.vti.emtity.InheritanceQ1;
 
 import java.util.Scanner;
 
-public class CanBo {
+public abstract class CanBo {
 	private String hoTen;
 	private byte tuoi;
 	private String gioiTinh;
@@ -53,6 +53,7 @@ public class CanBo {
 		System.out.println("Địa chỉ     : " + diaChi);
 	}
 
+	@Override
 	public String toString() {
 		return "CanBo{" + "hoten='" + hoTen + '\'' + ", tuoi=" + tuoi + ", gt=" + gioiTinh + ", diachi='" + diaChi
 				+ '\'' + '}';

@@ -37,7 +37,7 @@ public class Excercise5 {
 		System.out.println("Số cán bộ muốn nhập");
 		int n = scanner.nextInt();
 		int choose;
-		CanBo canBo = new CanBo();
+		CanBo canBo = null;
 		for (int i = 0; i < n; i++) {
 			System.out.println("Bạn muốn nhập cán bộ nào? (1:Công nhân || 2: Kỹ sư || 3: Nhân Viên) ");
 			choose = scanner.nextByte();
@@ -84,8 +84,8 @@ public class Excercise5 {
 
 // c) 	Hiện thị thông tin về danh sách các cán bộ.
 	public void inforCanBo() {
-		for (int i = 0; i< canBos.size(); i++) {
-			System.out.println(canBos.get(i));
+		for (CanBo canBo : canBos) {
+			System.out.println(canBo);
 		}
 	}
 
