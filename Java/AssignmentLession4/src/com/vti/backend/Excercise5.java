@@ -76,7 +76,7 @@ public class Excercise5 {
 		hoTen = scanner.nextLine();
 
 		for (CanBo canBo : canBos) {
-			if (hoTen.equals(canBo.getHoTen())) {
+			if (hoTen.toLowerCase().contains(canBo.getHoTen().toLowerCase())) {
 				canBo.getInfor();
 			}
 		}
